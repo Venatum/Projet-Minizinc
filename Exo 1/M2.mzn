@@ -7,7 +7,9 @@ constraint alldifferent(q);
 constraint alldifferent([q[i] + i | i in 1..n]);
 constraint alldifferent([q[i] - i | i in 1..n]);
 
-solve :: int_search(q, first_fail, indomain_min, complete) satisfy;
+constraint q[1] < q[n];
 
-output [ if fix(q[j]) == i then "Q" else "." endif ++
-         if j == n then "\n" else "" endif | i, j in 1..n];
+solve satisfy;
+
+output [ if fix(q[j]) == i then "|Q" else "|_" endif ++
+         if j == n then "|\n" else "" endif | i, j in 1..n];
