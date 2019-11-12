@@ -8,15 +8,19 @@ array[1..links_size, 1..2] of var 1..36: links;
 
 constraint alldifferent(rikudo);
 
+% for boxes with 3 links
 predicate three_links(var 1..36 : x, var 1..36 : x1, var 1..36 : x2, var 1..36 : x3) =
     x != 36 -> (x1 = x + 1 \/ x2 = x + 1 \/ x3 = x + 1);
 
+% for boxes with 4 links
 predicate four_links(var 1..36 : x, var 1..36 : x1, var 1..36 : x2, var 1..36 : x3, var 1..36 : x4) =
     x != 36 -> (x1 = x + 1 \/ x2 = x + 1 \/ x3 = x + 1 \/ x4 = x + 1);
 
+% for boxes with 5 links
 predicate five_links(var 1..36 : x, var 1..36 : x1, var 1..36 : x2, var 1..36 : x3, var 1..36 : x4, var 1..36 : x5) =
     x != 36 -> (x1 = x + 1 \/ x2 = x + 1 \/ x3 = x + 1 \/ x4 = x + 1 \/ x5 = x + 1);
 
+% for boxes with 6 links
 predicate six_links(var 1..36 : x, var 1..36 : x1, var 1..36 : x2, var 1..36 : x3, var 1..36 : x4, var 1..36 : x5, var 1..36 : x6) =
     x != 36 -> (x1 = x + 1 \/ x2 = x + 1 \/ x3 = x + 1 \/ x4 = x + 1 \/ x5 = x + 1 \/ x6 = x + 1);
 
@@ -71,30 +75,10 @@ constraint four_links(rikudo[35], rikudo[30], rikudo[31], rikudo[36], rikudo[34]
 constraint three_links(rikudo[36], rikudo[32], rikudo[31], rikudo[35]);
 
 % for links
-%constraint  (rikudo[links[1, 1]] = (rikudo[links[1, 2]] + 1)) \/
-%            (rikudo[links[1, 2]] = (rikudo[links[1, 1]] + 1));
-%constraint  (rikudo[links[2, 1]] = (rikudo[links[2, 2]] + 1)) \/
-%            (rikudo[links[2, 2]] = (rikudo[links[2, 1]] + 1));
-%constraint  (rikudo[links[3, 1]] = (rikudo[links[3, 2]] + 1)) \/
-%            (rikudo[links[3, 2]] = (rikudo[links[3, 1]] + 1));
 constraint
     forall(k in 1..links_size)(
         rikudo[links[k, 1]] = rikudo[links[k, 2]] + 1 \/ rikudo[links[k, 2]] = rikudo[links[k, 1]] + 1
-%        rikudo[links[1, k]] = rikudo[links[2, k]] + 1 \/ rikudo[links[2, k]] = rikudo[links[1, k]] + 1
     );
-
-% for links
-%constraint
-%    forall(link in links)(
-%        (rikudo[(link[1])] = rikudo[(link[2])] + 1) \/
-%        (rikudo[(link[2])] = rikudo[(link[1])] + 1)
-%    );
-
-% constraint for rikudo[1
-%if rikudo[1!= 1 /\ rikudo[1!=36 then
-%constraint rikudo[2=rikudo[1-1 \/ rikudo[5=rikudo[1-1 \/ rikudo[6=rikudo[1-1;
-%constraint rikudo[2=rikudo[1+1 \/ rikudo[5=rikudo[1+1 \/ rikudo[6=rikudo[1+1;
-%endif
 
 solve satisfy;
 output [
