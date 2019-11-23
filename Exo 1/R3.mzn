@@ -1,33 +1,47 @@
+include "globals.mzn";
 include "alldifferent.mzn";
 
 int: n;
 array[1..n, 1..n] of var bool: q;
 
+function var bool: orall(array[int] of var bool: tab) =
+    if length(tab) = 1
+    then tab[1]
+    else tab[1] \/ orall([tab[i] | i in 1..length(tab) where i > 1])
+    endif;
+
 % lines
-constraint forall(i in 1..n)(
-    sum(k in 1..n)(bool2int(q[k,i])) = 1
+constraint forall(i in 1..n) (
+    forall(j in 1..n) (
+        orall([q[i, k] | k in 1..n where k != j]) != q[i, j]
+    )
 );
+
 % columns
-constraint forall(i in 1..n)(
-    sum(k in 1..n)(bool2int(q[i,k])) = 1
+constraint forall(i in 1..n) (
+    forall(j in 1..n) (
+        orall([q[k, j] | k in 1..n where k != i]) != q[i, j]
+    )
 );
 
 % decreasing diagonales
-constraint forall(i in 1..(2 * n - 1))(
-    sum(k in 1..n)(
-        if((i - k + 1 > n) \/ (i - k + 1 < 1)) then 0
-        else bool2int(q[i - k + 1, k])
+constraint forall(i in 1..n) (
+    forall(j in 1..n) (
+        if q[i, j] = true /\ length([q[i + k, j + k] | k in (-n)..n where i + k > 0 /\ i + k < n /\ j + k > 0 /\ j + k < n /\ k != 0]) != 0
+        then orall([q[i + k, j + k] | k in (-n)..n where i + k > 0 /\ i + k < n /\ j + k > 0 /\ j + k < n /\ k != 0]) != true
+        else true
         endif
-    ) < 2
+    )
 );
 
 % increasing diagonales
-constraint forall(i in (2 - n)..n)(
-    sum(k in 1..n)(
-        if((i + k - 1 > n) \/ (i + k - 1 < 1)) then 0
-        else bool2int(q[i + k - 1, k])
+constraint forall(i in 1..n) (
+    forall(j in 1..n) (
+        if q[i, j] = true /\ length([q[i - k, j + k] | k in (-n)..n where i - k > 0 /\ i - k < n /\ j + k > 0 /\ j + k < n /\ k != 0]) != 0
+        then orall([q[i - k, j + k] | k in (-n)..n where i - k > 0 /\ i - k < n /\ j + k > 0 /\ j + k < n /\ k != 0]) != true
+        else true
         endif
-    ) < 2
+    )
 );
 
 solve satisfy;

@@ -11,5 +11,5 @@ constraint q[1] < q[n];
 
 solve satisfy;
 
-output [ if fix(q[j]) == i then "|Q" else "|_" endif ++
+output [ if fix(q[j]) == i then "|Q" else "| " endif ++
          if j == n then "|\n" else "" endif | i, j in 1..n];

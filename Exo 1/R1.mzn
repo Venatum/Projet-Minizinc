@@ -1,3 +1,4 @@
+int: n; % avoid errors when wrongly passing data
 % Reine 1 à 4
 var 1..4: R1;
 var 1..4: R2;
@@ -30,3 +31,6 @@ constraint R3 != R4 + 1;
 constraint R3 != R4 - 1;
 
 solve satisfy;
+
+output [ if fix(q[j]) == i then "|Q" else "| " endif ++
+         if j == n then "|\n" else "" endif | i, j in 1..n];
