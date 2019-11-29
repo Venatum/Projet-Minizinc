@@ -7,7 +7,7 @@ constraint alldifferent(q);
 constraint alldifferent([q[i] + i | i in 1..n]);
 constraint alldifferent([q[i] - i | i in 1..n]);
 
-constraint q[1] < q[n];
+constraint q[1] <= q[n];
 
 solve satisfy;
 
