@@ -1,5 +1,0 @@
-p cnf 4 6       c 4 variables & 6 clauses
- 1  2  3      0 c
--1 -2 -3      0 c
- 2 -3         0 c
- 1 -2         0 c
